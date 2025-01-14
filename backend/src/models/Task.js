@@ -22,6 +22,18 @@ const Task = sequelize.define('Task', {
         type: DataTypes.STRING,
         defaultValue: 'not started',
     },
+    isRecurring: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    recurrencePattern: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    nextRunDate: {
+        type: DataTypes.DATE,
+        allowNull: true
+    }
 })
 
 export default Task
