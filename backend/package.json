@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "nodemon index.js"
   },
   "type": "module",
   "author": "",
@@ -17,11 +17,15 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
     "geolib": "^3.3.4",
+    "https": "^1.0.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
+    "morgan": "^1.10.0",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
     "redis": "^4.7.0",
@@ -29,5 +33,8 @@
     "socket.io": "^4.8.1",
     "sqlite3": "^5.1.7",
     "twilio": "^5.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }

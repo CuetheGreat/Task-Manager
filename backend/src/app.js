@@ -1,16 +1,15 @@
 import express from 'express'
-import sequelize from '../database/config.js'
-import User from './models/User.js'
-import Task from './models/Task.js'
+import taskRoutes from './routes/tasks.js'
+import authRoutes from './routes/auth.js'
+import morgan from 'morgan'
+
 
 const app = express()
+app.use(express.json())
+app.use(morgan('dev'))
 
-try {
-    await sequelize.sync()
-    console.log('Database Synced')
-} catch (e) {
-    console.log("Error syncing Database: ", e)
-}
+app.use('/api/auth', authRoutes)
+app.use('/api', taskRoutes)
 
 app.get('/', (req, res) => {
     res.send("Welcome to the Task Sceduler API")
