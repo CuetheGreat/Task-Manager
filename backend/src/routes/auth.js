@@ -1,10 +1,10 @@
-import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import express from 'express'
-import User from '../models/User.js'
-import { body, validationResult } from 'express-validator'
-import rateLimit from 'express-rate-limit'
 import 'dotenv/config'
+import express from 'express'
+import rateLimit from 'express-rate-limit'
+import { body, validationResult } from 'express-validator'
+import jwt from 'jsonwebtoken'
+import User from '../models/User.js'
 
 
 const router = express.Router()
