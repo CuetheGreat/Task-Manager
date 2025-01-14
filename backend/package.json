@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "agenda": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "bull": "^4.16.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "geolib": "^3.3.4",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.16",
+    "redis": "^4.7.0",
+    "sequelize": "^6.37.5",
+    "socket.io": "^4.8.1",
+    "twilio": "^5.4.2"
+  }
+}
