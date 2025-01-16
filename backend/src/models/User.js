@@ -13,11 +13,7 @@ const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,
         allowNull: true,
-    },
-    dateCreates: {
-        type: DataTypes.DATE,
-        defaultValue: Date.now(),
-    },
+    }
 })
 
 export default User

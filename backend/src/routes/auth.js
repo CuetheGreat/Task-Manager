@@ -6,7 +6,6 @@ import { body, validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
 
-
 const router = express.Router()
 
 const registerValidation = [
@@ -33,7 +32,6 @@ router.post('/register', registerValidation, async (req, res) => {
         res.status(500).json({ error: e.message })
     }
 })
-
 
 const loginAttempLimit = rateLimit({
     windowMs: 5 * 60 * 1000,
