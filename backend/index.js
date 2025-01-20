@@ -1,7 +1,7 @@
 import sequelize from './config/database.js'
 import app from './src/app.js'
 
-const PORT = 3000
+const PORT = 4000
 const startServer = async () => {
     try {
         await sequelize.sync()

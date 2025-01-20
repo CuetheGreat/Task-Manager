@@ -17,7 +17,14 @@ const registerValidation = [
 router.post('/register', registerValidation, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+            error: "Validation Failed",
+            details: errors.array().reduce((acc, err) => {
+                acc[err.param] = err.msg;
+                return acc;
+            }, {}),
+        });
+
     }
 
     const { username, password, email } = req.body
@@ -27,9 +34,10 @@ router.post('/register', registerValidation, async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = await User.create({ username, password: hashedPassword, email })
-        res.status(201).json({ message: "User registered successfully.", user: newUser })
+        return res.status(201).json({ message: "User registered successfully.", user: newUser })
     } catch (e) {
-        res.status(500).json({ error: e.message })
+        return res.status(500).json({ error: "An unexpected error occurred. Please try again later." });
+
     }
 })
 
@@ -47,7 +55,14 @@ const loginValidator = [
 router.post('/login', loginAttempLimit, loginValidator, async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+            error: "Validation Failed",
+            details: errors.array().reduce((acc, err) => {
+                acc[err.param] = err.msg;
+                return acc;
+            }, {}),
+        });
+
     }
 
     const { email, password } = req.body
@@ -57,9 +72,9 @@ router.post('/login', loginAttempLimit, loginValidator, async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) return res.status(400).json({ error: "Password does not match. Try again" })
         const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '2h' })
-        res.status(200).json({ message: "Login Successfull", token })
+        return res.status(200).json({ message: "Login Successfull", token })
     } catch (e) {
-        res.status(500).json({ error: e.message })
+        return res.status(500).json({ error: e.message })
     }
 })
 
