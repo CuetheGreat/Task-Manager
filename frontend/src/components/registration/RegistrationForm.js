@@ -4,33 +4,34 @@ import { registerUser } from "../../features/user/userSlice";
 import ErrorMessages from "../errors/Errors";
 
 const RegistrationForm = () => {
-	const [username, setUsername] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
+	const [formData, setFormData] = useState({
+		username: "",
+		email: "",
+		password: "",
+		confirmPassword: "",
+	});
 	const [errors, setErrors] = useState({});
+	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
-	const handleInputChange = (e, field) => {
-		const { value } = e.target;
-
-		if (field === "email") setEmail(value);
-		if (field === "username") setUsername(value);
-		if (field === "password") setPassword(value);
-		if (field === "confirmPassword") setConfirmPassword(value);
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setFormData((prevData) => ({ ...prevData, [name]: value }));
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		if (password !== confirmPassword) {
+		if (formData.paswsword !== formData.confirmPassword) {
 			setErrors({ confirmPassword: "Passwords do not match" });
 			return;
 		}
 
+		setLoading(true);
 		try {
-			await dispatch(registerUser({ email, username, password })).unwrap();
+			await dispatch(registerUser(formData)).unwrap();
 			setErrors({});
+			setFormData({ username: "", email: "", password: "", confirmPassword: "" });
 		} catch (error) {
 			if (error.details) {
 				setErrors(error.details);
@@ -42,17 +43,15 @@ const RegistrationForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit}>
-
 			<ErrorMessages errors={errors} />
-
 			<div>
 				<label htmlFor="email">Email:</label><br />
 				<input
 					type="text"
 					id="email"
 					name="email"
-					value={email}
-					onChange={(e) => handleInputChange(e, "email")}
+					value={formData.email}
+					onChange={handleInputChange}
 					aria-describedby="emailError"
 				/>
 			</div>
@@ -63,8 +62,8 @@ const RegistrationForm = () => {
 					type="text"
 					id="username"
 					name="username"
-					value={username}
-					onChange={(e) => handleInputChange(e, "username")}
+					value={formData.username}
+					onChange={handleInputChange}
 					aria-describedby="usernameError"
 				/>
 			</div>
@@ -75,8 +74,8 @@ const RegistrationForm = () => {
 					type="password"
 					id="password"
 					name="password"
-					value={password}
-					onChange={(e) => handleInputChange(e, "password")}
+					value={formData.password}
+					onChange={handleInputChange}
 					aria-describedby="passwordError"
 				/>
 			</div>
@@ -87,8 +86,8 @@ const RegistrationForm = () => {
 					type="password"
 					id="confirmPassword"
 					name="confirmPassword"
-					value={confirmPassword}
-					onChange={(e) => handleInputChange(e, "confirmPassword")}
+					value={formData.confirmPassword}
+					onChange={handleInputChange}
 					aria-describedby="confirmPasswordError"
 				/>
 				{errors.confirmPassword && (
@@ -99,7 +98,9 @@ const RegistrationForm = () => {
 			</div>
 
 			<div>
-				<button type="submit">Register</button>
+				<button type="submit" disabled={loading}>
+					{loading ? "Registering" : "Register"}
+				</button>
 			</div>
 		</form>
 	);
