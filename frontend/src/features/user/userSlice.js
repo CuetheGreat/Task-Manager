@@ -1,18 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fetchAPI } from "../helpers/helper";
 
 const LOCAL = "http://localhost:4000"
-
-const fetchAPI = async (URL, method, body) => {
-	const res = await fetch(URL, {
-		method,
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(body)
-	})
-	if (!res.ok) {
-		throw new Error(`Error: ${res.statusText}`);
-	}
-	return res.json
-}
 
 export const registerUser = createAsyncThunk('user/registerNewUser', async (UserObject) => {
 	return await fetchAPI(`${LOCAL}/api/auth/register`, 'POST', UserObject)
@@ -36,20 +25,24 @@ const userSlice = createSlice({
 			.addCase(registerUser.pending, (state) => {
 				state.status = "loading"
 			})
-			.addCase(registerUser.fulfilled, (state) => {
-				state.status = "loading"
+			.addCase(registerUser.fulfilled, (state, action) => {
+				state.status = "success"
+				state = action.payload
 			})
-			.addCase(registerUser.rejected, (state) => {
-				state.status = "loading"
+			.addCase(registerUser.rejected, (state, action) => {
+				state.status = "failed"
+				state.error = action.error.message
 			})
 			.addCase(loginUser.pending, (state) => {
 				state.status = "loading"
 			})
-			.addCase(loginUser.fulfilled, (state) => {
-				state.status = "loading"
+			.addCase(loginUser.fulfilled, (state, action) => {
+				state.status = "success"
+				state = action.payload
 			})
-			.addCase(loginUser.rejected, (state) => {
-				state.status = "loading"
+			.addCase(loginUser.rejected, (state, action) => {
+				state.status = "failed"
+				state.error = action.error.message
 			})
 	}
 })

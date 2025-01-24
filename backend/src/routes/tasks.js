@@ -61,7 +61,7 @@ router.post('/tasks', authMiddleware, async (req, res, next) => {
             // TODO: Add reminder logic
             console.log(`Task: ${updatedTask.title} is due`)
 
-            const newNextRunDate = calculateNextRunDate(updatedTask);
+            const newNextRunDate = calculateNextRun(updatedTask);
             await updatedTask.update({ nextRunDate: newNextRunDate });
 
             await updatedTask.update({ status: 'in-Progress' })
