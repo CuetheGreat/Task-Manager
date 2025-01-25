@@ -21,7 +21,6 @@ const calculateNextRun = (task) => {
 }
 
 function getCronExpression(pattern) {
-  // TODO: Add logic to make days of months dynamic
   switch (pattern) {
     case 'daily':
       return '0 9 * * *'; // Every day at 9 AM
@@ -56,23 +55,14 @@ router.post('/tasks', authMiddleware, async (req, res, next) => {
         if (updatedTask) {
           const now = moment()
           const nextRunDate = moment(updatedTask.nextRunDate)
-
-          if (now.isSameOrAfter(nextRunDate)) {
-            // TODO: Add reminder logic
-            console.log(`Task: ${updatedTask.title} is due`)
-
-            const newNextRunDate = calculateNextRun(updatedTask);
-            await updatedTask.update({ nextRunDate: newNextRunDate });
-
-            await updatedTask.update({ status: 'in-Progress' })
-          }
+          //TODO: Update recurring task
         }
       })
     }
 
     res.status(201).json(task)
-  } catch (e) {
-    res.status(400).json({ error: e.message })
+  } catch (error) {
+    next(error)
   }
 })
 

@@ -94,13 +94,13 @@ Follow these instructions to set up the project locally:
 
 2. **Registration Page**:
 
-Navigate to http://localhost:3000/register
-Fill in the registration form and click "Register"
+	Navigate to http://localhost:3000/register
+	Fill in the registration form and click "Register"
 
 3. **Task Management**:
 
-After logging in, you will be redirected to the task management dashboard
-Create, edit, and delete tasks as needed
+	After logging in, you will be redirected to the task management dashboard
+	Create, edit, and delete tasks as needed
 
 ---
 

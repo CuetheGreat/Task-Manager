@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../features/user/userSlice";
 import ErrorMessages from "../errors/Errors";
 
@@ -13,25 +14,32 @@ const RegistrationForm = () => {
 	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setFormData((prevData) => ({ ...prevData, [name]: value }));
+	const handleInputChange = (name, value) => {
+		setFormData({
+			...formData, [name]: value
+		});
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		if (formData.paswsword !== formData.confirmPassword) {
+		if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+			setErrors({ global: "All fields are required" });
+			return;
+		}
+
+		if (formData.password !== formData.confirmPassword) {
 			setErrors({ confirmPassword: "Passwords do not match" });
 			return;
 		}
 
 		setLoading(true);
+		setErrors({});
 		try {
 			await dispatch(registerUser(formData)).unwrap();
-			setErrors({});
-			setFormData({ username: "", email: "", password: "", confirmPassword: "" });
+			navigate("/dashboard");
 		} catch (error) {
 			if (error.details) {
 				setErrors(error.details);
@@ -51,7 +59,7 @@ const RegistrationForm = () => {
 					id="email"
 					name="email"
 					value={formData.email}
-					onChange={handleInputChange}
+					onChange={({ target }) => { handleInputChange(target.name, target.value) }}
 					aria-describedby="emailError"
 				/>
 			</div>
@@ -63,7 +71,9 @@ const RegistrationForm = () => {
 					id="username"
 					name="username"
 					value={formData.username}
-					onChange={handleInputChange}
+					onChange={({ target }) => {
+						handleInputChange(target.name, target.value)
+					}}
 					aria-describedby="usernameError"
 				/>
 			</div>
@@ -75,7 +85,9 @@ const RegistrationForm = () => {
 					id="password"
 					name="password"
 					value={formData.password}
-					onChange={handleInputChange}
+					onChange={({ target }) => {
+						handleInputChange(target.name, target.value)
+					}}
 					aria-describedby="passwordError"
 				/>
 			</div>
@@ -87,14 +99,11 @@ const RegistrationForm = () => {
 					id="confirmPassword"
 					name="confirmPassword"
 					value={formData.confirmPassword}
-					onChange={handleInputChange}
+					onChange={({ target }) => {
+						handleInputChange(target.name, target.value)
+					}}
 					aria-describedby="confirmPasswordError"
 				/>
-				{errors.confirmPassword && (
-					<p id="confirmPasswordError" style={{ color: "red" }}>
-						{errors.confirmPassword}
-					</p>
-				)}
 			</div>
 
 			<div>

@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../../config/database.js";
+import { DataTypes } from 'sequelize';
+import sequelize from '../../config/database.js';
 
 const Task = sequelize.define('Task', {
     title: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     description: {
         type: DataTypes.TEXT,
@@ -16,7 +16,7 @@ const Task = sequelize.define('Task', {
     },
     dueDate: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: false,
     },
     status: {
         type: DataTypes.STRING,
@@ -24,16 +24,20 @@ const Task = sequelize.define('Task', {
     },
     isRecurring: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        allowNull: false,
     },
     recurrencePattern: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
     },
     nextRunDate: {
         type: DataTypes.DATE,
-        allowNull: true
-    }
-})
+        allowNull: true,
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+});
 
-export default Task
+export default Task;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../features/user/userSlice";
 import ErrorMessages from "../errors/Errors";
 
@@ -8,6 +9,7 @@ const LoginForm = () => {
 	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -17,9 +19,10 @@ const LoginForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
+		setErrors({});
 		try {
 			await dispatch(loginUser(formData)).unwrap();
-			setErrors({});
+			navigate("/dashboard");
 		} catch (error) {
 			setErrors(error.details || { global: "Login failed. Please check your credentials." });
 		} finally {
@@ -57,6 +60,9 @@ const LoginForm = () => {
 			<div>
 				<button type="submit" disabled={loading}>
 					{loading ? "Logging in..." : "Log in"}
+				</button>
+				<button type="button" onClick={() => navigate("/registration")}>
+					Register
 				</button>
 			</div>
 		</form>
